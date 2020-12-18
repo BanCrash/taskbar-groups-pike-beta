@@ -106,8 +106,8 @@ namespace TaskbarGroups
                     i++;
                 }
 
-                if (p.y > Screen.PrimaryScreen.Bounds.Height - 35)
-                    locationy = Screen.PrimaryScreen.Bounds.Height - this.Height - 45;
+                if (p.y > screen.Height - 35)
+                    locationy = screen.Height - this.Height - 45;
                 else
                     locationy = p.y - this.Height - 20;
                 locationx = p.x - (this.Width / 2);
