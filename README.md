@@ -1,5 +1,5 @@
-# taskbar-groups
-Easy access groups in windows taskbar
+# Taskbar groups
+Lightweight application that lets user create and pin groups to the Windows taskbar och desktop
 <br>
 <br>
 Preview of a taskbar group:
