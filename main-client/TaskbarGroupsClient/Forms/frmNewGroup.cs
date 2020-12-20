@@ -33,19 +33,15 @@ namespace TaskbarGroupsClient
 
             OpenFileDialog openFileDialog = new OpenFileDialog  // ask user to select img as group icon
             {
-                InitialDirectory = @"C:\",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
                 Title = "Select Group Icon",
-
                 CheckFileExists = true,
                 CheckPathExists = true,
-
                 DefaultExt = "img",
                 Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png",
                 FilterIndex = 2,
                 RestoreDirectory = true,
-
                 ReadOnlyChecked = true,
-                ShowReadOnly = true
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -69,19 +65,16 @@ namespace TaskbarGroupsClient
 
             OpenFileDialog openFileDialog = new OpenFileDialog // ask user to select exe file
             {
-                InitialDirectory = @"C:\",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu),
                 Title = "Create New Shortcut",
-
                 CheckFileExists = true,
                 CheckPathExists = true,
-
                 DefaultExt = "exe",
-                Filter = "Exe Files (.exe)|*.exe",
+                Filter = "Program (.exe)|*.exe",
                 FilterIndex = 2,
                 RestoreDirectory = true,
 
                 ReadOnlyChecked = true,
-                ShowReadOnly = true
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
