@@ -4,7 +4,7 @@ Lightweight application that lets user create and pin groups to the Windows task
 <br>
 Preview of a taskbar group:
 <br>
-![Preview of taskbar group](https://i.imgur.com/aw4aBML.png)
+![Preview of taskbar group](C:\Users\jacks\Desktop\Taskbar dev\Previews)
 <br><br>
 Preview of client:
 <br>
