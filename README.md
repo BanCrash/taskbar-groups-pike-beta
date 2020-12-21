@@ -4,12 +4,12 @@ Lightweight application that lets user create and pin groups to the Windows task
 <br>
 Preview of a taskbar group:
 <br>
-![Preview of taskbar group](https://i.imgur.com/v7rLaBU.png)
+![Preview of taskbar group](https://i.imgur.com/PDgofAp.png)
 <br><br>
 Preview of client:
 <br>
-![Preview of client](https://i.imgur.com/t0tUUnE.png)
+![Preview of client](https://i.imgur.com/WFdqcot.png)
 <br><br>
 Also works on desktop shortcuts:
 <br>
-![Also works on desktop shortcuts](https://i.imgur.com/qHS2WUG.png)
+![Also works on desktop shortcuts](https://i.imgur.com/M3KKJe0.png)
