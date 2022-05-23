@@ -47,6 +47,14 @@
             this.lblErrorShortcut = new System.Windows.Forms.Label();
             this.lblAddShortcut = new System.Windows.Forms.Label();
             this.pnlColor = new System.Windows.Forms.Panel();
+            this.numIconSeparationDown = new System.Windows.Forms.Button();
+            this.numIconSeparationUp = new System.Windows.Forms.Button();
+            this.lblIconSeparation = new System.Windows.Forms.Label();
+            this.lblIconSeparationTooltip = new System.Windows.Forms.Label();
+            this.numIconSizeDown = new System.Windows.Forms.Button();
+            this.numIconSizeUp = new System.Windows.Forms.Button();
+            this.lblIconSize = new System.Windows.Forms.Label();
+            this.lblIconSizeTooltip = new System.Windows.Forms.Label();
             this.pnlCustomColor1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.numOpacDown = new System.Windows.Forms.Button();
@@ -353,6 +361,14 @@
             // 
             this.pnlColor.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.pnlColor.AutoSize = true;
+            this.pnlColor.Controls.Add(this.numIconSeparationDown);
+            this.pnlColor.Controls.Add(this.numIconSeparationUp);
+            this.pnlColor.Controls.Add(this.lblIconSeparation);
+            this.pnlColor.Controls.Add(this.lblIconSeparationTooltip);
+            this.pnlColor.Controls.Add(this.numIconSizeDown);
+            this.pnlColor.Controls.Add(this.numIconSizeUp);
+            this.pnlColor.Controls.Add(this.lblIconSize);
+            this.pnlColor.Controls.Add(this.lblIconSizeTooltip);
             this.pnlColor.Controls.Add(this.pnlCustomColor1);
             this.pnlColor.Controls.Add(this.numOpacDown);
             this.pnlColor.Controls.Add(this.numOpacUp);
@@ -365,10 +381,110 @@
             this.pnlColor.Controls.Add(this.radioCustom);
             this.pnlColor.Controls.Add(this.radioDark);
             this.pnlColor.Controls.Add(this.radioLight);
-            this.pnlColor.Location = new System.Drawing.Point(98, 578);
+            this.pnlColor.Location = new System.Drawing.Point(98, 524);
             this.pnlColor.Name = "pnlColor";
-            this.pnlColor.Size = new System.Drawing.Size(368, 164);
+            this.pnlColor.Size = new System.Drawing.Size(368, 218);
             this.pnlColor.TabIndex = 48;
+            // 
+            // numIconSeparationDown
+            // 
+            this.numIconSeparationDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+            this.numIconSeparationDown.BackgroundImage = global::client.Properties.Resources.NumDownWhite;
+            this.numIconSeparationDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.numIconSeparationDown.FlatAppearance.BorderSize = 0;
+            this.numIconSeparationDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.numIconSeparationDown.Location = new System.Drawing.Point(302, 201);
+            this.numIconSeparationDown.Name = "numIconSeparationDown";
+            this.numIconSeparationDown.Size = new System.Drawing.Size(16, 10);
+            this.numIconSeparationDown.TabIndex = 57;
+            this.numIconSeparationDown.UseVisualStyleBackColor = false;
+            this.numIconSeparationDown.Click += new System.EventHandler(this.numIconSeparationDown_Click);
+            // 
+            // numIconSeparationUp
+            // 
+            this.numIconSeparationUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+            this.numIconSeparationUp.BackgroundImage = global::client.Properties.Resources.NumUpWhite;
+            this.numIconSeparationUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.numIconSeparationUp.FlatAppearance.BorderSize = 0;
+            this.numIconSeparationUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.numIconSeparationUp.Location = new System.Drawing.Point(302, 187);
+            this.numIconSeparationUp.Name = "numIconSeparationUp";
+            this.numIconSeparationUp.Size = new System.Drawing.Size(16, 10);
+            this.numIconSeparationUp.TabIndex = 58;
+            this.numIconSeparationUp.UseVisualStyleBackColor = false;
+            this.numIconSeparationUp.Click += new System.EventHandler(this.numIconSeparationUp_Click);
+            // 
+            // lblIconSeparation
+            // 
+            this.lblIconSeparation.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lblIconSeparation.ForeColor = System.Drawing.Color.White;
+            this.lblIconSeparation.Location = new System.Drawing.Point(251, 191);
+            this.lblIconSeparation.Name = "lblIconSeparation";
+            this.lblIconSeparation.Size = new System.Drawing.Size(35, 20);
+            this.lblIconSeparation.TabIndex = 56;
+            this.lblIconSeparation.Text = "23";
+            this.lblIconSeparation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblIconSeparationTooltip
+            // 
+            this.lblIconSeparationTooltip.AutoSize = true;
+            this.lblIconSeparationTooltip.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lblIconSeparationTooltip.ForeColor = System.Drawing.Color.White;
+            this.lblIconSeparationTooltip.Location = new System.Drawing.Point(127, 191);
+            this.lblIconSeparationTooltip.Name = "lblIconSeparationTooltip";
+            this.lblIconSeparationTooltip.Size = new System.Drawing.Size(114, 20);
+            this.lblIconSeparationTooltip.TabIndex = 55;
+            this.lblIconSeparationTooltip.Text = "Icon separation:";
+            // 
+            // numIconSizeDown
+            // 
+            this.numIconSizeDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+            this.numIconSizeDown.BackgroundImage = global::client.Properties.Resources.NumDownWhite;
+            this.numIconSizeDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.numIconSizeDown.FlatAppearance.BorderSize = 0;
+            this.numIconSizeDown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.numIconSizeDown.Location = new System.Drawing.Point(249, 168);
+            this.numIconSizeDown.Name = "numIconSizeDown";
+            this.numIconSizeDown.Size = new System.Drawing.Size(16, 10);
+            this.numIconSizeDown.TabIndex = 53;
+            this.numIconSizeDown.UseVisualStyleBackColor = false;
+            this.numIconSizeDown.Click += new System.EventHandler(this.numIconSizeDown_Click);
+            // 
+            // numIconSizeUp
+            // 
+            this.numIconSizeUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+            this.numIconSizeUp.BackgroundImage = global::client.Properties.Resources.NumUpWhite;
+            this.numIconSizeUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.numIconSizeUp.FlatAppearance.BorderSize = 0;
+            this.numIconSizeUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.numIconSizeUp.Location = new System.Drawing.Point(249, 154);
+            this.numIconSizeUp.Name = "numIconSizeUp";
+            this.numIconSizeUp.Size = new System.Drawing.Size(16, 10);
+            this.numIconSizeUp.TabIndex = 54;
+            this.numIconSizeUp.UseVisualStyleBackColor = false;
+            this.numIconSizeUp.Click += new System.EventHandler(this.numIconSizeUp_Click);
+            // 
+            // lblIconSize
+            // 
+            this.lblIconSize.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lblIconSize.ForeColor = System.Drawing.Color.White;
+            this.lblIconSize.Location = new System.Drawing.Point(199, 158);
+            this.lblIconSize.Name = "lblIconSize";
+            this.lblIconSize.Size = new System.Drawing.Size(35, 20);
+            this.lblIconSize.TabIndex = 52;
+            this.lblIconSize.Text = "23";
+            this.lblIconSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblIconSizeTooltip
+            // 
+            this.lblIconSizeTooltip.AutoSize = true;
+            this.lblIconSizeTooltip.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.lblIconSizeTooltip.ForeColor = System.Drawing.Color.White;
+            this.lblIconSizeTooltip.Location = new System.Drawing.Point(127, 158);
+            this.lblIconSizeTooltip.Name = "lblIconSizeTooltip";
+            this.lblIconSizeTooltip.Size = new System.Drawing.Size(69, 20);
+            this.lblIconSizeTooltip.TabIndex = 51;
+            this.lblIconSizeTooltip.Text = "Icon size:";
             // 
             // pnlCustomColor1
             // 
@@ -759,13 +875,12 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
             this.ClientSize = new System.Drawing.Size(589, 821);
+            this.Controls.Add(this.pnlArguments);
             this.Controls.Add(this.pnlDeleteConfo);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.pnlArguments);
             this.Controls.Add(this.pnlEnd);
             this.Controls.Add(this.pnlAddShortcut);
-            this.Controls.Add(this.pnlColor);
             this.Controls.Add(this.lblWith);
             this.Controls.Add(this.lblErrorNum);
             this.Controls.Add(this.cmdWidthDown);
@@ -776,6 +891,7 @@
             this.Controls.Add(this.pnlGroupIcon);
             this.Controls.Add(this.cmdWidthUp);
             this.Controls.Add(this.txtGroupName);
+            this.Controls.Add(this.pnlColor);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(605, 39);
             this.Name = "frmGroup";
@@ -857,5 +973,13 @@
         private System.Windows.Forms.Panel pnlCustomColor1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblIconSizeTooltip;
+        private System.Windows.Forms.Button numIconSizeDown;
+        private System.Windows.Forms.Button numIconSizeUp;
+        private System.Windows.Forms.Label lblIconSize;
+        private System.Windows.Forms.Label lblIconSeparationTooltip;
+        private System.Windows.Forms.Button numIconSeparationDown;
+        private System.Windows.Forms.Button numIconSeparationUp;
+        private System.Windows.Forms.Label lblIconSeparation;
     }
 }
