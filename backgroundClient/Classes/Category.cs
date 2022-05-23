@@ -20,6 +20,8 @@ namespace backgroundClient.Classes
         public int Width; // not used aon
         public double Opacity = 10;
         public String HoverColor;
+        public int IconSize = 50;
+        public int Separation = 8;
 
         Regex specialCharRegex = new Regex("[*'\",_&#^@]");
 
@@ -63,6 +65,8 @@ namespace backgroundClient.Classes
                 this.Opacity = category.Opacity;
                 this.allowOpenAll = category.allowOpenAll;
                 this.HoverColor = category.HoverColor;
+                this.IconSize = category.IconSize;
+                this.Separation = category.Separation;
             }
 
         }

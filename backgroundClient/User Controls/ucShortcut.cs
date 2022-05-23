@@ -14,6 +14,7 @@ namespace backgroundClient.User_controls
         public ProgramShortcut Psc { get; set; }
         public frmMain MotherForm { get; set; }
         public Image bkgImage { get; set; }
+        public LoadedCategory loadedCategory { get; set; }
         public ucShortcut()
         {
             InitializeComponent();
@@ -27,6 +28,10 @@ namespace backgroundClient.User_controls
             picIcon.BackgroundImage = bkgImage;
             toolTip1.SetToolTip(picIcon, Psc.name);
             toolTip1.SetToolTip(this, Psc.name);
+            // Change size according to category settings
+            picIcon.Location = new System.Drawing.Point(loadedCategory.Separation, loadedCategory.Separation);
+            picIcon.Size = new System.Drawing.Size(loadedCategory.IconSize, loadedCategory.IconSize);
+            Size = new System.Drawing.Size(loadedCategory.IconSize + loadedCategory.Separation * 2, loadedCategory.IconSize + loadedCategory.Separation * 2);
         }
 
         public void ucShortcut_Click(object sender, EventArgs e)
