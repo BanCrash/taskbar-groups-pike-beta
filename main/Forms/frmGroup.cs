@@ -86,6 +86,8 @@ namespace client.Forms
             cmdAddGroupIcon.BackgroundImage = Category.LoadIconImage();
             lblNum.Text = Category.Width.ToString();
             lblOpacity.Text = Category.Opacity.ToString();
+            lblIconSize.Text = Category.IconSize.ToString();
+            lblIconSeparation.Text = Category.Separation.ToString();
 
             if (Category.ColorString == null)  // Handles if groups is created from earlier releas w/o ColorString property
                 Category.ColorString = ColorTranslator.ToHtml(Color.FromArgb(31, 31, 31));
@@ -938,6 +940,72 @@ namespace client.Forms
             {
                 numOpacDown.Enabled = false;
                 numOpacDown.BackgroundImage = global::client.Properties.Resources.NumDownGray;
+            }
+        }
+
+        // Icon size
+        private void numIconSizeUp_Click(object sender, EventArgs e)
+        {
+            int iconSize = int.Parse(lblIconSize.Text);
+            iconSize += 1;
+            Category.IconSize = iconSize;
+            lblIconSize.Text = iconSize.ToString();
+            numIconSizeDown.Enabled = true;
+            numIconSizeDown.BackgroundImage = global::client.Properties.Resources.NumDownWhite;
+
+            if (iconSize > 255)
+            {
+                numIconSizeUp.Enabled = false;
+                numIconSizeUp.BackgroundImage = global::client.Properties.Resources.NumUpGray;
+            }
+        }
+
+        private void numIconSizeDown_Click(object sender, EventArgs e)
+        {
+            int iconSize = int.Parse(lblIconSize.Text);
+            iconSize -= 1;
+            Category.IconSize = iconSize;
+            lblIconSize.Text = iconSize.ToString();
+            numIconSizeUp.Enabled = true;
+            numIconSizeUp.BackgroundImage = global::client.Properties.Resources.NumUpWhite;
+
+            if (iconSize < 11)
+            {
+                numIconSizeDown.Enabled = false;
+                numIconSizeDown.BackgroundImage = global::client.Properties.Resources.NumDownGray;
+            }
+        }
+
+        // Icon separation
+        private void numIconSeparationUp_Click(object sender, EventArgs e)
+        {
+            int separation = int.Parse(lblIconSeparation.Text);
+            separation += 1;
+            Category.Separation = separation;
+            lblIconSeparation.Text = separation.ToString();
+            numIconSeparationDown.Enabled = true;
+            numIconSeparationDown.BackgroundImage = global::client.Properties.Resources.NumDownWhite;
+
+            if (separation > 49)
+            {
+                numIconSeparationUp.Enabled = false;
+                numIconSeparationUp.BackgroundImage = global::client.Properties.Resources.NumUpGray;
+            }
+        }
+
+        private void numIconSeparationDown_Click(object sender, EventArgs e)
+        {
+            int separation = int.Parse(lblIconSeparation.Text);
+            separation -= 1;
+            Category.Separation = separation;
+            lblIconSeparation.Text = separation.ToString();
+            numIconSeparationUp.Enabled = true;
+            numIconSeparationUp.BackgroundImage = global::client.Properties.Resources.NumUpWhite;
+
+            if (separation < 2)
+            {
+                numIconSeparationDown.Enabled = false;
+                numIconSeparationDown.BackgroundImage = global::client.Properties.Resources.NumDownGray;
             }
         }
 

@@ -384,10 +384,8 @@ namespace backgroundClient
         // Loading category and building shortcuts
         private void LoadCategory()
         {
-            this.Width = 0; 
-            this.Height = (int)(45 * xDpi);
-            ucShortcutHeight = this.Height;
-            ucShortcutWidth = (int)(55 * xDpi);
+            this.Width = 0;
+            this.Height = loadedCat.IconSize + loadedCat.Separation * 2;
             int x = 0;
             int y = 0;
             int width = loadedCat.Width;
@@ -410,13 +408,13 @@ namespace backgroundClient
                 if (columns > width)  // creating new row if there are more psc than max width
                 {
                     x = 0;
-                    y += (int)(45 * xDpi);
-                    this.Height += (int)(45*xDpi);
+                    y += loadedCat.IconSize + loadedCat.Separation * 2;
+                    this.Height += loadedCat.IconSize + loadedCat.Separation * 2;
                     columns = 1;
                 }
 
-                if (this.Width < ((width * (int)(55 * xDpi))))
-                    this.Width += ((int)(55 * (xDpi)));
+                if (this.Width < ((width * (loadedCat.IconSize + loadedCat.Separation * 2))))
+                    this.Width += (loadedCat.IconSize + loadedCat.Separation * 2);
 
                 // OLD
                 //BuildShortcutPanel(x, y, psc);
@@ -426,7 +424,8 @@ namespace backgroundClient
                 {
                     Psc = psc,
                     MotherForm = this,
-                    bkgImage = loadedCat.programImages[i]
+                    bkgImage = loadedCat.programImages[i],
+                    loadedCategory = loadedCat
                 };
                 pscPanel.Location = new System.Drawing.Point(x, y);
                 this.Controls.Add(pscPanel);
@@ -435,7 +434,7 @@ namespace backgroundClient
                 pscPanel.BringToFront();
 
                 // Reset values
-                x += (int)(55 * xDpi);
+                x += (loadedCat.IconSize + loadedCat.Separation * 2);
                 columns++;
             }
 
