@@ -174,8 +174,7 @@ namespace backgroundClient
 
             if (argumentList[0] == "tskBaropen_allGroup")
             {
-                foreach (ucShortcut usc in this.ControlList)
-                    usc.ucShortcut_Click(usc, new EventArgs());
+                OpenAllShortcuts(new object(), new EventArgs());
                 this.Close();
             }
             SetLocation();
@@ -489,6 +488,17 @@ namespace backgroundClient
             }
         }
 
+        public void OpenAllShortcuts(object sender, EventArgs e)
+        {
+            foreach (ucShortcut usc in this.ControlList)
+            {
+                if (!usc.Psc.isOpenAllShortcut)
+                {
+                    usc.ucShortcut_Click(sender, e);
+                }
+            }
+        }
+
 
         // Closes application upon deactivation
         private void frmMain_Deactivate(object sender, EventArgs e)
@@ -559,8 +569,7 @@ namespace backgroundClient
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.Enter && loadedCat.allowOpenAll)
             {
-                foreach (ucShortcut usc in this.ControlList)
-                    usc.ucShortcut_Click(sender, e);
+                OpenAllShortcuts(sender, e);
             }
 
             try
