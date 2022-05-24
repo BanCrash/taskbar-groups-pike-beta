@@ -57,6 +57,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pnlExistingGroups = new System.Windows.Forms.Panel();
             this.pnlBottomMain = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.pnlLeftColumn.SuspendLayout();
             this.panel2.SuspendLayout();
             this.pnlVersionInfo.SuspendLayout();
@@ -65,12 +68,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.cmdAddGroup)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlBottomMain.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlLeftColumn
             // 
             this.pnlLeftColumn.AutoSize = true;
             this.pnlLeftColumn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
+            this.pnlLeftColumn.Controls.Add(this.panel3);
             this.pnlLeftColumn.Controls.Add(this.panel2);
             this.pnlLeftColumn.Controls.Add(this.pnlVersionInfo);
             this.pnlLeftColumn.Controls.Add(this.pnlHelp);
@@ -79,7 +84,7 @@
             this.pnlLeftColumn.ImeMode = System.Windows.Forms.ImeMode.On;
             this.pnlLeftColumn.Location = new System.Drawing.Point(0, 0);
             this.pnlLeftColumn.Name = "pnlLeftColumn";
-            this.pnlLeftColumn.Size = new System.Drawing.Size(307, 821);
+            this.pnlLeftColumn.Size = new System.Drawing.Size(301, 821);
             this.pnlLeftColumn.TabIndex = 0;
             // 
             // panel2
@@ -89,7 +94,7 @@
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.label11);
-            this.panel2.Location = new System.Drawing.Point(12, 356);
+            this.panel2.Location = new System.Drawing.Point(6, 427);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(292, 180);
             this.panel2.TabIndex = 20;
@@ -158,7 +163,8 @@
             this.pnlVersionInfo.Controls.Add(this.githubVersion);
             this.pnlVersionInfo.Controls.Add(this.githubLabel);
             this.pnlVersionInfo.Controls.Add(this.label4);
-            this.pnlVersionInfo.Location = new System.Drawing.Point(12, 616);
+            this.pnlVersionInfo.Controls.Add(this.label5);
+            this.pnlVersionInfo.Location = new System.Drawing.Point(6, 631);
             this.pnlVersionInfo.Name = "pnlVersionInfo";
             this.pnlVersionInfo.Size = new System.Drawing.Size(292, 112);
             this.pnlVersionInfo.TabIndex = 18;
@@ -246,7 +252,7 @@
             this.pnlHelp.Controls.Add(this.lblHelp1);
             this.pnlHelp.Controls.Add(this.lblHelp3);
             this.pnlHelp.Controls.Add(this.lblHelp2);
-            this.pnlHelp.Location = new System.Drawing.Point(12, 126);
+            this.pnlHelp.Location = new System.Drawing.Point(6, 88);
             this.pnlHelp.Name = "pnlHelp";
             this.pnlHelp.Size = new System.Drawing.Size(292, 224);
             this.pnlHelp.TabIndex = 17;
@@ -313,7 +319,7 @@
             this.lblHelpTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblHelpTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHelpTitle.ForeColor = System.Drawing.Color.Transparent;
-            this.lblHelpTitle.Location = new System.Drawing.Point(41, 44);
+            this.lblHelpTitle.Location = new System.Drawing.Point(32, 26);
             this.lblHelpTitle.Name = "lblHelpTitle";
             this.lblHelpTitle.Size = new System.Drawing.Size(240, 56);
             this.lblHelpTitle.TabIndex = 13;
@@ -411,6 +417,41 @@
             this.pnlBottomMain.Size = new System.Drawing.Size(662, 101);
             this.pnlBottomMain.TabIndex = 4;
             // 
+            // panel3
+            // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel3.Controls.Add(this.label9);
+            this.panel3.Controls.Add(this.label12);
+            this.panel3.Location = new System.Drawing.Point(6, 296);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(292, 102);
+            this.panel3.TabIndex = 22;
+            // 
+            // label9
+            // 
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Transparent;
+            this.label9.Location = new System.Drawing.Point(6, 38);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(283, 90);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "If you want to have a shortcut that opens all the programs of the group, simply a" +
+    "dd the group shortcut to its group.";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label12
+            // 
+            this.label12.BackColor = System.Drawing.Color.Transparent;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.Transparent;
+            this.label12.Location = new System.Drawing.Point(22, 1);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(243, 27);
+            this.label12.TabIndex = 17;
+            this.label12.Text = "Add a shortcut to open all programs:";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -438,6 +479,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnlBottomMain.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -473,5 +515,8 @@
         private System.Windows.Forms.Button portabilityButton;
         private System.Windows.Forms.LinkLabel githubLink;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label12;
     }
 }
