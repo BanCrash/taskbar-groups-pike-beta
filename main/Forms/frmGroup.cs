@@ -254,7 +254,20 @@ namespace client.Forms
 
             ProgramShortcut psc = new ProgramShortcut() { FilePath = appFilePath, isWindowsApp = isExtension, isOpenAllShortcut = isOpenAllShortcut, WorkingDirectory = workingDirec, name = appName }; //Create new shortcut obj
             Category.ShortcutList.Add(psc); // Add to panel shortcut list
-            LoadShortcut(psc, Category.ShortcutList.Count - 1);
+
+            // Clears and reloads all shortcuts with new positions
+            pnlShortcuts.Controls.Clear();
+            pnlShortcuts.Height = 0;
+            pnlAddShortcut.Top = 220;
+
+            selectedShortcut = null;
+
+            int position = 0;
+            foreach (ProgramShortcut psc2 in Category.ShortcutList)
+            {
+                LoadShortcut(psc2, position);
+                position++;
+            }
         }
 
         // Handle setting/getting shortcut name
