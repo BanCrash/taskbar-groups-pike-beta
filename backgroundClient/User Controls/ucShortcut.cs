@@ -36,17 +36,23 @@ namespace backgroundClient.User_controls
 
         public void ucShortcut_Click(object sender, EventArgs e)
         {
-            if (Psc.isWindowsApp)
+            if (Psc.isOpenAllShortcut)
             {
-                Process p = new Process() {StartInfo = new ProcessStartInfo() { UseShellExecute = true, FileName = $@"shell:appsFolder\{Psc.FilePath}" }};
+                MotherForm.OpenAllShortcuts(sender, e);
+            }
+            else if (Psc.isWindowsApp)
+            {
+                Process p = new Process() { StartInfo = new ProcessStartInfo() { UseShellExecute = true, FileName = $@"shell:appsFolder\{Psc.FilePath}" } };
                 p.Start();
-            } else
+            }
+            else
             {
-                if(Path.GetExtension(Psc.FilePath).ToLower() == ".lnk" && Psc.FilePath == Paths.exeString)
+                if (Path.GetExtension(Psc.FilePath).ToLower() == ".lnk" && Psc.FilePath == Paths.exeString)
 
                 {
                     MotherForm.OpenFile(Psc.Arguments, Psc.FilePath, Paths.path);
-                } else
+                }
+                else
                 {
                     MotherForm.OpenFile(Psc.Arguments, Psc.FilePath, Psc.WorkingDirectory);
                 }

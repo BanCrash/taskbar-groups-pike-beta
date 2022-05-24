@@ -15,6 +15,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using ChinhDo.Transactions;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using Shell32;
 
 namespace client.Forms
 {
@@ -241,19 +242,23 @@ namespace client.Forms
         private void addShortcut(String file, bool isExtension = false)
         {
             String workingDirec = getProperDirectory(file);
-            String appName = "";
             String appFilePath = expandEnvironment(file);
+            bool isOpenAllShortcut = false;
+            String appName = "";
+            appName = getShortcutName(isExtension, appFilePath);
 
-            getShortcutName(appName, isExtension, appFilePath);
+            if (appName == Category.Name && Path.GetExtension(appFilePath).ToLower() == ".lnk" && GetShortcutTargetFile(appFilePath).Contains("Taskbar Groups Background.exe"))
+            {
+                isOpenAllShortcut = true;
+            }
 
-
-            ProgramShortcut psc = new ProgramShortcut() { FilePath = appFilePath, isWindowsApp = isExtension, WorkingDirectory = workingDirec, name = appName }; //Create new shortcut obj
+            ProgramShortcut psc = new ProgramShortcut() { FilePath = appFilePath, isWindowsApp = isExtension, isOpenAllShortcut = isOpenAllShortcut, WorkingDirectory = workingDirec, name = appName }; //Create new shortcut obj
             Category.ShortcutList.Add(psc); // Add to panel shortcut list
             LoadShortcut(psc, Category.ShortcutList.Count - 1);
         }
 
         // Handle setting/getting shortcut name
-        public static String getShortcutName(String appName, bool isExtension, String appFilePath)
+        public static String getShortcutName(bool isExtension, String appFilePath)
         {
             // Grab the file name without the extension to be used later as the naming scheme for the icon .jpg image
             if (isExtension)
@@ -271,6 +276,25 @@ namespace client.Forms
                     return Path.GetFileNameWithoutExtension(appFilePath);
                 }
             }
+        }
+
+        // Handle getting shortcut target -> https://stackoverflow.com/questions/9414152/get-target-of-shortcut-folder
+        public static string GetShortcutTargetFile(string shortcutFilename)
+        {
+            string pathOnly = System.IO.Path.GetDirectoryName(shortcutFilename);
+            string filenameOnly = System.IO.Path.GetFileName(shortcutFilename);
+
+            Shell shell = new Shell();
+            Shell32.Folder folder = shell.NameSpace(pathOnly);
+            FolderItem folderItem = folder.ParseName(filenameOnly);
+
+            if (folderItem != null)
+            {
+                Shell32.ShellLinkObject link = (Shell32.ShellLinkObject)folderItem.GetLink;
+                return link.Path;
+            }
+
+            return string.Empty;
         }
 
         // Delete shortcut
