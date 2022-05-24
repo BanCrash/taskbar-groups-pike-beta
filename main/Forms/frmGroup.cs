@@ -628,7 +628,7 @@ namespace client.Forms
                         }
                         catch (Exception)
                         {
-                            MessageBox.Show("Please close all programs used within the taskbar group in order to save!");
+                            MessageBox.Show("Please close Taskbar background utility in order to save!");
                             return;
                         }
                     }
