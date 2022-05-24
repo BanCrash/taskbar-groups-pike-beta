@@ -55,8 +55,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ChinhDo.Transactions.FileManager, Version=1.5.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TxFileManager.1.5.0.1\lib\netstandard2.0\ChinhDo.Transactions.FileManager.dll</HintPath>
+    <Reference Include="ChinhDo.Transactions.FileManager">
+      <HintPath>..\packages\TxFileManager.1.4.0\lib\netstandard2.0\ChinhDo.Transactions.FileManager.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.WindowsAPICodePack">
