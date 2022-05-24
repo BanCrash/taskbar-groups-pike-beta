@@ -4,6 +4,7 @@
     {
         public string FilePath { get; set; }
         public bool isWindowsApp { get; set; }
+        public bool isOpenAllShortcut { get; set; } = false;
 
         public string name { get; set; } = "";
         public string Arguments = "";
