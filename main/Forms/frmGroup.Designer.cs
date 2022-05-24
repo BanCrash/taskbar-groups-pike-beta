@@ -108,11 +108,11 @@
             this.lblWith.BackColor = System.Drawing.Color.Transparent;
             this.lblWith.Font = new System.Drawing.Font("Segoe UI", 13F);
             this.lblWith.ForeColor = System.Drawing.Color.White;
-            this.lblWith.Location = new System.Drawing.Point(423, 23);
+            this.lblWith.Location = new System.Drawing.Point(358, 22);
             this.lblWith.Name = "lblWith";
-            this.lblWith.Size = new System.Drawing.Size(64, 25);
+            this.lblWith.Size = new System.Drawing.Size(124, 25);
             this.lblWith.TabIndex = 40;
-            this.lblWith.Text = "Width:";
+            this.lblWith.Text = "Icons per row:";
             // 
             // lblErrorNum
             // 
