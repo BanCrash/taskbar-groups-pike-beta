@@ -1005,6 +1005,11 @@ namespace client.Forms
         // Enable the argument textbox once a shortcut/program has been selected
         public void enableSelection(ucProgramShortcut passedShortcut)
         {
+            if (passedShortcut.Shortcut.isOpenAllShortcut)
+            {
+                return;
+            }
+
             selectedShortcut = passedShortcut;
             passedShortcut.ucSelected();
             passedShortcut.IsSelected = true;
