@@ -1137,5 +1137,12 @@ namespace client.Forms
         {
             cmdAddGroupIcon.Tag = "Changed";
         }
+
+        private void ReloadIcon_Click(object sender, EventArgs e)
+        {
+            cmdAddGroupIcon.Tag = "Unchanged";
+            ReloadIcon.Hide();
+            ReloadIcon.Dispose();
+        }
     }
 }

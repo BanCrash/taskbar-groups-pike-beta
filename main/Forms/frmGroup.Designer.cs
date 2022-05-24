@@ -87,6 +87,7 @@
             this.pnlDeleteConfo = new System.Windows.Forms.Panel();
             this.confirmDelete = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.ReloadIcon = new System.Windows.Forms.PictureBox();
             this.pnlGroupIcon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cmdAddGroupIcon)).BeginInit();
             this.pnlAddShortcut.SuspendLayout();
@@ -99,6 +100,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnlDeleteConfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ReloadIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // lblWith
@@ -221,7 +223,7 @@
             this.pnlGroupIcon.Controls.Add(this.lblAddGroupIconDesc);
             this.pnlGroupIcon.Location = new System.Drawing.Point(49, 83);
             this.pnlGroupIcon.Name = "pnlGroupIcon";
-            this.pnlGroupIcon.Size = new System.Drawing.Size(471, 102);
+            this.pnlGroupIcon.Size = new System.Drawing.Size(391, 111);
             this.pnlGroupIcon.TabIndex = 33;
             this.pnlGroupIcon.Click += new System.EventHandler(this.cmdAddGroupIcon_Click);
             this.pnlGroupIcon.DragDrop += new System.Windows.Forms.DragEventHandler(this.pnlDragDropImg);
@@ -868,6 +870,18 @@
             this.label2.Text = "Are you sure you want to delete this group?";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // ReloadIcon
+            // 
+            this.ReloadIcon.BackgroundImage = global::client.Properties.Resources.ReloadIconWhite;
+            this.ReloadIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ReloadIcon.Location = new System.Drawing.Point(455, 98);
+            this.ReloadIcon.Margin = new System.Windows.Forms.Padding(30, 30, 10, 30);
+            this.ReloadIcon.Name = "ReloadIcon";
+            this.ReloadIcon.Size = new System.Drawing.Size(60, 60);
+            this.ReloadIcon.TabIndex = 13;
+            this.ReloadIcon.TabStop = false;
+            this.ReloadIcon.Click += new System.EventHandler(this.ReloadIcon_Click);
+            // 
             // frmGroup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -875,6 +889,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
             this.ClientSize = new System.Drawing.Size(589, 821);
+            this.Controls.Add(this.ReloadIcon);
             this.Controls.Add(this.pnlArguments);
             this.Controls.Add(this.pnlDeleteConfo);
             this.Controls.Add(this.pictureBox2);
@@ -916,6 +931,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.pnlDeleteConfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ReloadIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -981,5 +997,6 @@
         private System.Windows.Forms.Button numIconSeparationDown;
         private System.Windows.Forms.Button numIconSeparationUp;
         private System.Windows.Forms.Label lblIconSeparation;
+        private System.Windows.Forms.PictureBox ReloadIcon;
     }
 }
