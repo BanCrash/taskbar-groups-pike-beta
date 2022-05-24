@@ -554,9 +554,9 @@ namespace client.Forms
         // Exit editor
         private void cmdExit_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            this.Dispose();
+            this.Close();
             Client.Reload(); //flush and reload category panels
+            Client.Reset();
         }
 
         // Save group
