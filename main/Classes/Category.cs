@@ -212,15 +212,14 @@ namespace client.Classes
         // Avoids having the icons need to be rebuilt everytime which takes time and resources
         public void cacheIcons()
         {
-            bool refreshIcons = false;
-            
+
             // Defines the paths for the icons folder
             string path = Path.Combine(Paths.ConfigPath, this.Name);
             string iconPath = Path.Combine(path, "Icons");
 
             // Check and delete current icons folder to completely rebuild the icon cache
             // Only done on re-edits of the group and isn't done usually
-            if (refreshIcons)
+            if (Directory.Exists(iconPath))
             {
                 Directory.Delete(iconPath, true);
             }
@@ -252,11 +251,7 @@ namespace client.Classes
                     savePath = Path.Combine(iconPath, Path.GetFileNameWithoutExtension(filePath) + ".png");
                 }
 
-                if (refreshIcons || !File.Exists(savePath))
-                {
-                    File.Delete(savePath);
-                    programShortcutControl.logo.Save(savePath);
-                }
+                programShortcutControl.logo.Save(savePath);
             }
         }
 
