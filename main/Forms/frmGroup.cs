@@ -16,6 +16,12 @@ using ChinhDo.Transactions;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using Shell32;
+using Lnk;
+using Lnk.ShellItems;
+using ExtensionBlocks;
+using ShellBag0X31 = Lnk.ShellItems.ShellBag0X31;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace client.Forms
 {
