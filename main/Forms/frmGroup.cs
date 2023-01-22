@@ -16,6 +16,8 @@ using ChinhDo.Transactions;
 using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using Shell32;
 
 
 namespace client.Forms
