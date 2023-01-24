@@ -32,7 +32,7 @@ namespace client.User_controls
             // Ensure the shortcut name cannot be empty
             if (Shortcut.name == "")
             {
-                Shortcut.name = frmGroup.getShortcutName(Shortcut.isWindowsApp, Shortcut.FilePath);
+                Shortcut.name = frmGroup.getShortcutName(Shortcut.name, Shortcut.isWindowsApp, Shortcut.FilePath);
             }
             txtShortcutName.Text = Shortcut.name;
             /*
