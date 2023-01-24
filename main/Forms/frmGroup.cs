@@ -152,7 +152,7 @@ namespace client.Forms
             };
             pnlShortcuts.Controls.Add(ucPsc);
             ucPsc.Show();
-            ucPsc.BringToFront();
+            ucPsc.SendToBack();
 
             if (pnlShortcuts.Controls.Count < 6)
             {
@@ -249,20 +249,20 @@ namespace client.Forms
             String appFilePath = expandEnvironment(file);
             bool isOpenAllShortcut = false;
             String appName = "";
-            appName = getShortcutName(isExtension, appFilePath);
 
             if (appName == Category.Name && Path.GetExtension(appFilePath).ToLower() == ".lnk" && GetShortcutTargetFile(appFilePath).Contains("Taskbar Groups Background.exe"))
             {
                 isOpenAllShortcut = true;
             }
+            appName = getShortcutName(appName, isExtension, appFilePath);
 
             ProgramShortcut psc = new ProgramShortcut() { FilePath = appFilePath, isWindowsApp = isExtension, isOpenAllShortcut = isOpenAllShortcut, WorkingDirectory = workingDirec, name = appName }; //Create new shortcut obj
             Category.ShortcutList.Add(psc); // Add to panel shortcut list
-            LoadShortcut(psc, Category.ShortcutList.Count - 1);
+            LoadShortcut(psc, Category.ShortcutList.Count-1);
         }
 
         // Handle setting/getting shortcut name
-        public static String getShortcutName(bool isExtension, String appFilePath)
+        public static String getShortcutName(String appName, bool isExtension, String appFilePath)
         {
             // Grab the file name without the extension to be used later as the naming scheme for the icon .jpg image
             if (isExtension)
@@ -308,12 +308,13 @@ namespace client.Forms
 
             Category.ShortcutList.Remove(psc);
             resetSelection();
-            bool before = true;
+            bool after = false;
+            int controlIndex=0;
             //int i = 0;
 
             foreach (ucProgramShortcut ucPsc in pnlShortcuts.Controls)
             {
-                if (before)
+                if (after)
                 {
                     ucPsc.Top -= 50 * (int)(frmClient.eDpi / 96);
                     ucPsc.Position -= 1;
@@ -322,15 +323,15 @@ namespace client.Forms
                 {
                     //i = pnlShortcuts.Controls.IndexOf(ucPsc);
 
-                    int controlIndex = pnlShortcuts.Controls.IndexOf(ucPsc);
+                    controlIndex = pnlShortcuts.Controls.IndexOf(ucPsc);
 
-                    pnlShortcuts.Controls.Remove(ucPsc);
+                    
 
                     if (controlIndex + 1 != pnlShortcuts.Controls.Count)
                     {
                         try
                         {
-                            pnlShortcuts.ScrollControlIntoView(pnlShortcuts.Controls[controlIndex]);
+                            pnlShortcuts.ScrollControlIntoView(pnlShortcuts.Controls[controlIndex+1]);
                         }
                         catch
                         {
@@ -341,38 +342,43 @@ namespace client.Forms
                         }
                     }
 
-                    before = false;
+                    after = true;
                 }
             }
+
+            pnlShortcuts.Controls.Remove(pnlShortcuts.Controls[controlIndex]);
 
             if (pnlShortcuts.Controls.Count < 5)
             {
                 pnlShortcuts.Height -= 50 * (int)(frmClient.eDpi / 96);
                 pnlAddShortcut.Top -= 50 * (int)(frmClient.eDpi / 96);
             }
+
+            pnlShortcuts_ControlAdded(this, new ControlEventArgs(this));
         }
 
         // Change positions of shortcut panels
         public void Swap<T>(IList<T> list, int indexA, int indexB)
         {
-            resetSelection();
-            T tmp = list[indexA];
-            list[indexA] = list[indexB];
-            list[indexB] = tmp;
-
-            // Clears and reloads all shortcuts with new positions
-            pnlShortcuts.Controls.Clear();
-            pnlShortcuts.Height = 0;
-            pnlAddShortcut.Top = 220 * (int)(frmClient.eDpi / 96);
-
-            selectedShortcut = null;
-
-            int position = 0;
-            foreach (ProgramShortcut psc in Category.ShortcutList)
+            // Get move amount via eDPI calculation
+            int moveAmount = 50 * (int)(frmClient.eDpi / 96);
+            (list[indexA], list[indexB]) = (list[indexB], list[indexA]); // Swap items
+            resetSelection(); // Reset item selection
+            
+            if (indexA>indexB) 
             {
-                LoadShortcut(psc, position);
-                position++;
+                pnlShortcuts.Controls[indexA].Top -= moveAmount;
+                pnlShortcuts.Controls[indexB].Top += moveAmount;
+
+                pnlShortcuts.Controls.SetChildIndex(pnlShortcuts.Controls[indexB], indexA);
+            } else
+            {
+                pnlShortcuts.Controls[indexA].Top += moveAmount;
+                pnlShortcuts.Controls[indexB].Top -= moveAmount;
+                pnlShortcuts.Controls.SetChildIndex(pnlShortcuts.Controls[indexA], indexB);
             }
+
+            pnlShortcuts_ControlAdded(this, new ControlEventArgs(this));
         }
 
 
@@ -1266,6 +1272,14 @@ namespace client.Forms
             var ms = new MemoryStream(bytes);
             var bp = (Bitmap)Image.FromStream(ms);
             return bp;
+        }
+
+        private void pnlShortcuts_ControlAdded(object sender, ControlEventArgs e)
+        {
+            for(int i=0; i< pnlShortcuts.Controls.Count; i++)
+            {
+                ((ucProgramShortcut)pnlShortcuts.Controls[i]).ucProgramShortcut_ReadjustArrows(i);
+            }
         }
     }
 }
