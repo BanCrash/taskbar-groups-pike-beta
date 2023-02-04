@@ -59,16 +59,17 @@ namespace client.User_controls
 
 
             String cacheIconPath = MotherForm.Category.generateCachePath(Shortcut.FilePath);
+            Image bkgImg = (Image)(new Bitmap(1, 1));
+            
 
-
-            if(File.Exists(cacheIconPath))
+            if (File.Exists(cacheIconPath))
             {
-                picShortcut.BackgroundImage = frmGroup.BitmapFromFile(cacheIconPath); 
+                bkgImg = frmGroup.BitmapFromFile(cacheIconPath); 
             } else
             {
                 if (Shortcut.isWindowsApp)
                 {
-                    picShortcut.BackgroundImage = handleWindowsApp.getWindowsAppIcon(Shortcut.FilePath, true);
+                    bkgImg = handleWindowsApp.getWindowsAppIcon(Shortcut.FilePath, true);
                 }
                 else if (File.Exists(Shortcut.FilePath)) // Checks if the shortcut actually exists; if not then display an error image
                 {
@@ -78,11 +79,11 @@ namespace client.User_controls
                     // Depending on the extension, the icon can be directly extracted or it has to be gotten through other methods as to not get the shortcut arrow
                     if (imageExtension == ".lnk")
                     {
-                        picShortcut.BackgroundImage = frmGroup.handleLnkExt(Shortcut.FilePath);
+                        bkgImg = frmGroup.handleLnkExt(Shortcut.FilePath);
                     }
                     else
                     {
-                        picShortcut.BackgroundImage = Icon.ExtractAssociatedIcon(Shortcut.FilePath).ToBitmap();
+                        bkgImg = Icon.ExtractAssociatedIcon(Shortcut.FilePath).ToBitmap();
                     }
 
                 }
@@ -90,7 +91,7 @@ namespace client.User_controls
                 {
                     try
                     {
-                        picShortcut.BackgroundImage = handleFolder.GetFolderIcon(Shortcut.FilePath).ToBitmap();
+                        bkgImg = handleFolder.GetFolderIcon(Shortcut.FilePath).ToBitmap();
                     }
                     catch (Exception ex)
                     {
@@ -99,29 +100,45 @@ namespace client.User_controls
                 }
                 else
                 {
-                    picShortcut.BackgroundImage = global::client.Properties.Resources.Error;
+                    bkgImg = global::client.Properties.Resources.Error;
                 }
             }
 
-           
-
-            if (Position == 0)
-            {
-                cmdNumUp.Enabled = false;
-                cmdNumUp.BackgroundImage = global::client.Properties.Resources.NumUpGray;
-            }
-            if (Position == MotherForm.Category.ShortcutList.Count - 1)
-            {
-                cmdNumDown.Enabled = false;
-                cmdNumDown.BackgroundImage = global::client.Properties.Resources.NumDownGray;
-
-            }
+            bkgImg = ImageFunctions.ResizeImage(bkgImg, picShortcut.Width, picShortcut.Height);
+            picShortcut.BackgroundImage = bkgImg;
 
             this.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
             txtShortcutName.GotFocus += txtShortcutName_GotFocus;
 
             txtShortcutName.Text = Truncate(Shortcut.name, (int)Math.Floor(txtShortcutName.Width / characterWidth));
+        }
+
+        public void ucProgramShortcut_ReadjustArrows(int pos)
+        {
+            Position = pos;
+            // Reset to default
+            // Rerun checks
+            if (Position == 0)
+            {
+                cmdNumUp.Enabled = false;
+                cmdNumUp.BackgroundImage = global::client.Properties.Resources.NumUpGray;
+            } else
+            {
+                cmdNumUp.Enabled = true;
+                cmdNumUp.BackgroundImage = global::client.Properties.Resources.NumUp;
+            }
+
+            if (Position == MotherForm.Category.ShortcutList.Count - 1)
+            {
+                cmdNumDown.Enabled = false;
+                cmdNumDown.BackgroundImage = global::client.Properties.Resources.NumDownGray;
+
+            } else
+            {
+                cmdNumDown.Enabled = true;
+                cmdNumDown.BackgroundImage = global::client.Properties.Resources.NumDown;
+            }
         }
 
         private void ucProgramShortcut_MouseEnter(object sender, EventArgs e)
@@ -146,7 +163,6 @@ namespace client.User_controls
         private void cmdNumDown_Click(object sender, EventArgs e)
         {
             MotherForm.Swap(MotherForm.Category.ShortcutList, Position, Position + 1);
-
         }
 
         private void cmdDelete_Click(object sender, EventArgs e)
@@ -228,12 +244,19 @@ namespace client.User_controls
 
         private void ucProgramShortcut_SizeChanged(object sender, EventArgs e)
         {
-            txtShortcutName.Width = this.Width - (txtShortcutName.Bounds.Left) - (this.Width - pictureBox1.Bounds.Left);
-            
-            if (!txtShortcutName.Focused)
+            try
             {
-                txtShortcutName.Text = Truncate(Shortcut.name, (int)Math.Floor(txtShortcutName.Width / characterWidth));
+                txtShortcutName.Width = this.Width - (txtShortcutName.Bounds.Left) - (this.Width - pictureBox1.Bounds.Left);
+
+                if (!txtShortcutName.Focused)
+                {
+                    txtShortcutName.Text = Truncate(Shortcut.name, (int)Math.Floor(txtShortcutName.Width / characterWidth));
+                }
+            } catch (Exception)
+            {
+
             }
+            
         }
 
         public static string Truncate(string value, int maxChars)

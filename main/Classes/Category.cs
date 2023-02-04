@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace client.Classes
 {
@@ -70,6 +71,11 @@ namespace client.Classes
                 this.Separation = category.Separation;
             }
 
+        }
+
+        public String getPath()
+        {
+            return path;
         }
 
         public Category() // needed for XML serialization
@@ -229,13 +235,11 @@ namespace client.Classes
             // Writes the icon to the new folder in a .jpg format
             // Namign scheme for the files are done through Path.GetFileNameWithoutExtension()
 
-            int ind = ShortcutList.Count - 1;
-            foreach(ProgramShortcut shrtcutList in ShortcutList)
+            for(int i=0; i< ShortcutList.Count; i++)
             {
-                String filePath = shrtcutList.FilePath;
+                String filePath = ShortcutList[i].FilePath;
 
-                ucProgramShortcut programShortcutControl = Application.OpenForms["frmGroup"].Controls["pnlShortcuts"].Controls[ind] as ucProgramShortcut;
-                ind--;
+                ucProgramShortcut programShortcutControl = Application.OpenForms["frmGroup"].Controls["pnlShortcuts"].Controls[i] as ucProgramShortcut;
                 string savePath = Path.Combine(iconPath, generateMD5Hash(filePath) + ".png");
                 programShortcutControl.logo.Save(savePath);
             }
@@ -368,15 +372,26 @@ namespace client.Classes
         // END OF CLASS
         //
 
-        public static void closeBackgroundApp()
+        public static void closeBackgroundApp(string path = "")
         {
             Process[] pname = Process.GetProcessesByName(Path.GetFileNameWithoutExtension("Taskbar Groups Background"));
             if (pname.Length != 0)
             {
                 Process bkg = pname[0];
 
-                bkg.Kill();
+                Process p = new Process();
+                if (path == "")
+                {
+                    path = Paths.BackgroundApplication;
+                }
+                p.StartInfo.FileName = path;
+                p.StartInfo.Arguments = "exitApplicationModeReserved";
+                p.Start();
 
+                if(!bkg.WaitForExit(2000))
+                {
+                    bkg.Kill();
+                }
             }
             
         }

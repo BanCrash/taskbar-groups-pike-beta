@@ -14,14 +14,9 @@ using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ChinhDo.Transactions;
 using System.Drawing.Imaging;
-using System.Diagnostics;
-using Shell32;
-using Lnk;
-using Lnk.ShellItems;
-using ExtensionBlocks;
-using ShellBag0X31 = Lnk.ShellItems.ShellBag0X31;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 
 namespace client.Forms
 {
@@ -52,8 +47,7 @@ namespace client.Forms
         // CTOR for creating a new group
         public frmGroup(frmClient client)
         {
-            intializeDLLs();
-
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             // Setting from profile
             System.Runtime.ProfileOptimization.StartProfile("frmGroup.Profile");
 
@@ -74,9 +68,6 @@ namespace client.Forms
         // CTOR for editing an existing group
         public frmGroup(frmClient client, Category category)
         {
-            intializeDLLs();
-
-
             // Setting form profile
             System.Runtime.ProfileOptimization.StartProfile("frmGroup.Profile");
 
@@ -129,6 +120,11 @@ namespace client.Forms
                 LoadShortcut(psc, position);
                 position++;
             }
+
+            
+
+            pnlShortcuts_ControlAdded(this, new ControlEventArgs(this));
+
         }
 
         // Handle scaling etc(?) (WORK IN PROGRESS)
@@ -159,15 +155,21 @@ namespace client.Forms
                 Width = pnlAddShortcut.Width
             };
             pnlShortcuts.Controls.Add(ucPsc);
+            ucPsc.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
             ucPsc.Show();
-            ucPsc.BringToFront();
+            ucPsc.SendToBack();
 
+            
+            
             if (pnlShortcuts.Controls.Count < 6)
             {
                 pnlShortcuts.Height += 50 * (int)(frmClient.eDpi / 96);
                 pnlAddShortcut.Top += 50 * (int)(frmClient.eDpi / 96);
             }
-            ucPsc.Location = new Point(25 * (int)(frmClient.eDpi / 96), (pnlShortcuts.Controls.Count * 50 * (int)(frmClient.eDpi / 96)) - 50 * (int)(frmClient.eDpi / 96));
+            
+
+            //ucPsc.Location = new Point(25 * (int)(frmClient.eDpi / 96), (pnlShortcuts.Controls.Count * 50 * (int)(frmClient.eDpi / 96)) - 50 * (int)(frmClient.eDpi / 96));
+            
             pnlShortcuts.AutoScroll = true;
 
         }
@@ -257,12 +259,12 @@ namespace client.Forms
             String appName = "";
             String appFilePath = expandEnvironment(file);
 
-            getShortcutName(appName, isExtension, appFilePath);
+            appName = getShortcutName(appName, isExtension, appFilePath);
 
 
             ProgramShortcut psc = new ProgramShortcut() { FilePath = appFilePath, isWindowsApp = isExtension, WorkingDirectory = workingDirec, name = appName }; //Create new shortcut obj
             Category.ShortcutList.Add(psc); // Add to panel shortcut list
-            LoadShortcut(psc, Category.ShortcutList.Count - 1);
+            LoadShortcut(psc, Category.ShortcutList.Count-1);
         }
 
         // Handle setting/getting shortcut name
@@ -293,29 +295,30 @@ namespace client.Forms
 
             Category.ShortcutList.Remove(psc);
             resetSelection();
-            bool before = true;
+            bool after = false;
+            int controlIndex=0;
             //int i = 0;
 
             foreach (ucProgramShortcut ucPsc in pnlShortcuts.Controls)
             {
-                if (before)
+                if (after)
                 {
-                    ucPsc.Top -= 50 * (int)(frmClient.eDpi / 96);
+                    //ucPsc.Top -= 50 * (int)(frmClient.eDpi / 96);
                     ucPsc.Position -= 1;
                 }
                 if (ucPsc.Shortcut == psc)
                 {
                     //i = pnlShortcuts.Controls.IndexOf(ucPsc);
 
-                    int controlIndex = pnlShortcuts.Controls.IndexOf(ucPsc);
+                    controlIndex = pnlShortcuts.Controls.IndexOf(ucPsc);
 
-                    pnlShortcuts.Controls.Remove(ucPsc);
+                    
 
                     if (controlIndex + 1 != pnlShortcuts.Controls.Count)
                     {
                         try
                         {
-                            pnlShortcuts.ScrollControlIntoView(pnlShortcuts.Controls[controlIndex]);
+                            pnlShortcuts.ScrollControlIntoView(pnlShortcuts.Controls[controlIndex+1]);
                         }
                         catch
                         {
@@ -326,38 +329,44 @@ namespace client.Forms
                         }
                     }
 
-                    before = false;
+                    after = true;
                 }
             }
 
+            pnlShortcuts.Controls.Remove(pnlShortcuts.Controls[controlIndex]);
+
+            /*
             if (pnlShortcuts.Controls.Count < 5)
             {
                 pnlShortcuts.Height -= 50 * (int)(frmClient.eDpi / 96);
                 pnlAddShortcut.Top -= 50 * (int)(frmClient.eDpi / 96);
             }
+            */
+            pnlShortcuts_ControlAdded(this, new ControlEventArgs(this));
         }
 
         // Change positions of shortcut panels
         public void Swap<T>(IList<T> list, int indexA, int indexB)
         {
-            resetSelection();
-            T tmp = list[indexA];
-            list[indexA] = list[indexB];
-            list[indexB] = tmp;
-
-            // Clears and reloads all shortcuts with new positions
-            pnlShortcuts.Controls.Clear();
-            pnlShortcuts.Height = 0;
-            pnlAddShortcut.Top = 220 * (int)(frmClient.eDpi / 96);
-
-            selectedShortcut = null;
-
-            int position = 0;
-            foreach (ProgramShortcut psc in Category.ShortcutList)
+            // Get move amount via eDPI calculation
+            int moveAmount = 50 * (int)(frmClient.eDpi / 96);
+            (list[indexA], list[indexB]) = (list[indexB], list[indexA]); // Swap items
+            resetSelection(); // Reset item selection
+            
+            if (indexA>indexB) 
             {
-                LoadShortcut(psc, position);
-                position++;
+                //pnlShortcuts.Controls[indexA].Top -= moveAmount;
+                //pnlShortcuts.Controls[indexB].Top += moveAmount;
+
+                pnlShortcuts.Controls.SetChildIndex(pnlShortcuts.Controls[indexB], indexA);
+            } else
+            {
+                //pnlShortcuts.Controls[indexA].Top += moveAmount;
+                //pnlShortcuts.Controls[indexB].Top -= moveAmount;
+                pnlShortcuts.Controls.SetChildIndex(pnlShortcuts.Controls[indexA], indexB);
             }
+
+            pnlShortcuts_ControlAdded(this, new ControlEventArgs(this));
         }
 
 
@@ -435,7 +444,6 @@ namespace client.Forms
         }
 
 
-
         // Handle returning images of icon files (.lnk)
         public static Bitmap handleLnkExt(String file)
         {
@@ -450,53 +458,82 @@ namespace client.Forms
 
             ShellLinkObject link = (ShellLinkObject)folderItem.GetLink;
             */
-
-            LnkFile linkFile = Lnk.Lnk.LoadFile(file);
-
+            var ShellData = Kaitai.WindowsLnkFile.FromFile(file);
+            
+            
             var targetPath = "";
+            var iconLC = "";
 
-            linkFile.TargetIDs.ForEach(s =>
+            // Pass #1 using Kaitai reading
+            //LnkFile linkFile = Lnk.Lnk.LoadFile(file);
+
+
+            if (ShellData.RelPath != null)
             {
-                //targetPath += s. + "\\";
-                var sType = s.GetType().Name.ToUpper();
-                if (sType == "SHELLBAG0X2F")
+                var test = Path.GetDirectoryName(file);
+                targetPath = Path.GetFullPath(Path.GetDirectoryName(file) + "\\" + ShellData.RelPath.Str);
+            }
+            if(ShellData.IconLocation != null && ShellData.IconLocation.Str != null)
+            {
+                targetPath = ShellData.IconLocation.Str;
+            }
+
+            /*
+
+            // Pass #2 using Lnk library
+            if(string.IsNullOrEmpty(targetPath))
+            {
+                LnkFile linkFile = Lnk.Lnk.LoadFile(file);
+                linkFile.TargetIDs.ForEach(s =>
                 {
-                    targetPath += ((ShellBag0X2F)s).Value + "\\";
-                }
-                else if (sType == "SHELLBAG0X31")
-                {
-                    targetPath += ((ShellBag0X31)s).ShortName + "\\";
-                }
-                else if (sType == "SHELLBAG0X32")
-                {
-                    targetPath += ((ShellBag0X32)s).ShortName;
-                } else if (sType == "SHELLBAG0X00")
-                {
-                    ShellBag0X00 castedShellBag = ((ShellBag0X00)s);
-                    //targetPath += ((ShellBag0X00)s).PropertyStore.Sheets.First().PropertyNames.First().Value; // Super super hacky
-                    for (int i=0; i< castedShellBag.PropertyStore.Sheets.Count; i++)
+                    var sType = s.GetType().Name.ToUpper();
+                    if (sType == "SHELLBAG0X2F")
                     {
-                        var testPath = "";
-                        if(castedShellBag.PropertyStore.Sheets[i].PropertyNames.TryGetValue("2", out testPath))
+                        targetPath += ((ShellBag0X2F)s).Value + "\\";
+                    }
+                    else if (sType == "SHELLBAG0X31")
+                    {
+                        targetPath += ((ShellBag0X31)s).ShortName + "\\";
+                    }
+                    else if (sType == "SHELLBAG0X32")
+                    {
+                        targetPath += ((ShellBag0X32)s).ShortName;
+                    }
+                    else if (sType == "SHELLBAG0X00")
+                    {
+                        ShellBag0X00 castedShellBag = ((ShellBag0X00)s);
+                        //targetPath += ((ShellBag0X00)s).PropertyStore.Sheets.First().PropertyNames.First().Value; // Super super hacky
+                        for (int i = 0; i < castedShellBag.PropertyStore.Sheets.Count; i++)
                         {
-                            if(System.IO.File.Exists(testPath))
+                            var testPath = "";
+                            if (castedShellBag.PropertyStore.Sheets[i].PropertyNames.TryGetValue("2", out testPath))
                             {
-                                targetPath = testPath;
+                                if (System.IO.File.Exists(testPath))
+                                {
+                                    targetPath = testPath;
+                                }
                             }
                         }
+
+                        //((ShellBag0X00)s).PropertyStore.Sheets.First().PropertyNames.TryGetValue(2, out testPath); // Super super hacky
                     }
-                    
-                    //((ShellBag0X00)s).PropertyStore.Sheets.First().PropertyNames.TryGetValue(2, out testPath); // Super super hacky
+                });
+
+
+                if (string.IsNullOrEmpty(iconLC))
+                {
+                    iconLC = linkFile.IconLocation;
                 }
-            });
+            }
+            
+            */
 
-            var iconLC = linkFile.IconLocation;
+
+            //var iconLC = linkFile.IconLocation;
 
 
-            if (!string.IsNullOrEmpty(linkFile.LocalPath))
-            {
-                targetPath = linkFile.LocalPath;
-            } else
+            // Pass #3 using IWshShortcut (native)
+            if (string.IsNullOrEmpty(targetPath))
             {
                 try
                 {
@@ -505,19 +542,19 @@ namespace client.Forms
                     String[] icLocation = lnkIcon.IconLocation.Split(',');
                     String testPath = lnkIcon.TargetPath;
 
-                    if(string.IsNullOrEmpty(targetPath) && (System.IO.File.Exists(testPath) || Directory.Exists(testPath)))
+                    if (string.IsNullOrEmpty(targetPath) && (System.IO.File.Exists(testPath) || Directory.Exists(testPath)))
                     {
                         targetPath = testPath;
                     }
 
-                    if(string.IsNullOrEmpty(iconLC))
+                    if (string.IsNullOrEmpty(iconLC))
                     {
                         iconLC = icLocation[0];
                     }
 
                 }
                 catch (Exception e)
-                {}
+                { }
             }
 
 
@@ -528,6 +565,21 @@ namespace client.Forms
 
 
 
+            if (!string.IsNullOrEmpty(iconLC) && !iconLC.Contains("http"))
+            {
+
+                return Icon.ExtractAssociatedIcon(Path.GetFullPath(expandEnvironment(iconLC))).ToBitmap();
+            }
+            else if (string.IsNullOrEmpty(iconLC) && (targetPath == "" || !System.IO.File.Exists(targetPath)))
+            {
+                return handleWindowsApp.getWindowsAppIcon(file);
+
+            }
+            else
+            {
+                return Icon.ExtractAssociatedIcon(Path.GetFullPath(expandEnvironment(targetPath))).ToBitmap();
+            }
+            // Return the icon
             try
             {
                 if (!string.IsNullOrEmpty(iconLC) && !iconLC.Contains("http"))
@@ -543,7 +595,7 @@ namespace client.Forms
                 {
                     return Icon.ExtractAssociatedIcon(Path.GetFullPath(expandEnvironment(targetPath))).ToBitmap();
                 }
-            } catch (Exception)
+            } catch (Exception e)
             {
                 return Icon.ExtractAssociatedIcon(Path.GetFullPath(expandEnvironment(file))).ToBitmap();
             }
@@ -629,7 +681,7 @@ namespace client.Forms
         private void cmdExit_Click(object sender, EventArgs e)
         {
             this.Close();
-            Client.Reload(); //flush and reload category panels
+            Client.Reload(); //flush and reload category panel
             Client.Reset();
         }
 
@@ -1135,6 +1187,9 @@ namespace client.Forms
                 Point deleteButton = cmdDelete.FindForm().PointToClient(cmdDelete.Parent.PointToScreen(cmdDelete.Location));
                 pnlDeleteConfo.Location = new Point(deleteButton.X - 63, deleteButton.Y - 100);
             }
+
+            pnlAddShortcut.Location = new Point(pnlAddShortcut.Location.X, pnlShortcuts.Bottom + (int)(20 * frmClient.eDpi / 96));
+            pnlAddShortcut.Left = (this.ClientSize.Width - pnlAddShortcut.Width) / 2;
         }
 
         private void openDeleteConformation(object sender, EventArgs e)
@@ -1142,22 +1197,6 @@ namespace client.Forms
             Point deleteButton = cmdDelete.FindForm().PointToClient(cmdDelete.Parent.PointToScreen(cmdDelete.Location));
             pnlDeleteConfo.Location = new Point(deleteButton.X - 63, deleteButton.Y - 100);
             pnlDeleteConfo.Visible = true;
-        }
-
-        private void intializeDLLs()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-            {
-                string resourceName = new AssemblyName(args.Name).Name + ".dll";
-                string resource = Array.Find(this.GetType().Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
-
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
-                {
-                    Byte[] assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
-                }
-            };
         }
 
         private Image constructIcons()
@@ -1218,6 +1257,14 @@ namespace client.Forms
             var ms = new MemoryStream(bytes);
             var bp = (Bitmap)Image.FromStream(ms);
             return bp;
+        }
+
+        private void pnlShortcuts_ControlAdded(object sender, ControlEventArgs e)
+        {
+            for(int i=0; i< pnlShortcuts.Controls.Count; i++)
+            {
+                ((ucProgramShortcut)pnlShortcuts.Controls[i]).ucProgramShortcut_ReadjustArrows(i);
+            }
         }
     }
 }

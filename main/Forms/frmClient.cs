@@ -15,6 +15,8 @@ using System.Transactions;
 using System.Windows.Forms;
 using Windows.Data.Json;
 using System.Runtime.InteropServices;
+using Kaitai;
+using System.Security.Cryptography.X509Certificates;
 
 namespace client.Forms
 {
@@ -26,19 +28,6 @@ namespace client.Forms
 
         public frmClient(List<string> arguments)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-            {
-                string resourceName = new AssemblyName(args.Name).Name + ".dll";
-                string resource = Array.Find(this.GetType().Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
-
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
-                {
-                    Byte[] assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
-                }
-            };
-
             System.Runtime.ProfileOptimization.StartProfile("frmClient.Profile");
             InitializeComponent();
             eDpi = Display(DpiType.Effective);
@@ -66,6 +55,20 @@ namespace client.Forms
             {
                 portabilityButton.Tag = "y";
                 portabilityButton.Image = Properties.Resources.toggleOn;
+
+                string[] files =
+    Directory.GetFiles(Paths.ShortcutsPath, "*.lnk");
+
+                foreach (string lnkPath in files)
+                {
+                    WindowsLnkFile lk = WindowsLnkFile.FromFile(lnkPath);
+                    if (lk.RelPath == null || string.IsNullOrEmpty(lk.RelPath.Str) || lk.RelPath.Str != "..\\Taskbar Groups Background.exe")
+                    {
+                        changeAllShortcuts();
+                        break;
+                    }
+
+                }
             }
             else
             {
@@ -77,6 +80,11 @@ namespace client.Forms
             {
                 changeAllShortcuts();
             }
+            //pnlExistingGroups.AutoScroll = true;
+            //pnlExistingGroups.AutoSize = true;
+            //flowLayoutPanel1.AutoScroll = true;
+            pnlExistingShortcuts.AutoSize = true;
+            Reset();
         }
 
         public static uint eDpi { get; set; } // Effective DPI
@@ -94,9 +102,7 @@ namespace client.Forms
         public void Reload()
         {
             // flush and reload existing groups
-            pnlVersionInfo.Location = new Point((int)(19 * eDpi / 96), (int)(615 * eDpi / 96)); // eDpi position ajustments
-            pnlExistingGroups.Controls.Clear();
-            pnlExistingGroups.Height = 0;
+            pnlExistingShortcuts.Controls.Clear();
 
             List<String> subDirectories = new List<String>();
 
@@ -119,6 +125,7 @@ namespace client.Forms
 
 
             //string[] subDirectories = Directory.GetDirectories(Paths.ConfigPath);
+            pnlExistingShortcuts.SuspendLayout();
             foreach (string dir in subDirectories)
             {
                 try
@@ -130,7 +137,9 @@ namespace client.Forms
                     MessageBox.Show(ex.Message);
                 }
             }
+            pnlExistingShortcuts.ResumeLayout(true);
 
+            /*
             if (pnlExistingGroups.HasChildren) // helper if no group is created
             {
                 lblHelpTitle.Text = "Click on a group to add a taskbar shortcut";
@@ -141,7 +150,8 @@ namespace client.Forms
                 lblHelpTitle.Text = "Press on \"Add Taskbar group\" to get started";
                 pnlHelp.Visible = false;
             }
-            pnlBottomMain.Top = pnlExistingGroups.Bottom + (int)(20 * eDpi / 96); // spacing between existing groups and add new group btn
+            */
+            //pnlBottomMain.Location = new Point(pnlBottomMain.Location.X, tableLayoutPanel1.Bottom + (int)(20 * eDpi / 96)); // spacing between existing groups and add new group btn
 
             Reset();
         }
@@ -152,9 +162,11 @@ namespace client.Forms
             categoryList.Add(category);
 
             ucCategoryPanel newCategory = new ucCategoryPanel(this, category);
-            pnlExistingGroups.Height += newCategory.Height;
-            pnlExistingGroups.Controls.Add(newCategory);
-            newCategory.Top = pnlExistingGroups.Height - newCategory.Height;
+            pnlExistingShortcuts.RowCount += 1;
+            pnlExistingShortcuts.Controls.Add(newCategory,0, pnlExistingShortcuts.RowCount - 1);
+            newCategory.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            //newCategory.Top = pnlExistingGroups.Height - newCategory.Height;
+            //newCategory.Dock = DockStyle.Top;
             newCategory.Show();
             newCategory.BringToFront();
             newCategory.MouseEnter += new System.EventHandler((sender, e) => EnterControl(sender, e, newCategory));
@@ -163,10 +175,12 @@ namespace client.Forms
 
         public void Reset()
         {
-            if (pnlBottomMain.Bottom > this.Bottom)
-                pnlLeftColumn.Height = pnlBottomMain.Bottom;
-            else
-                pnlLeftColumn.Height = this.RectangleToScreen(this.ClientRectangle).Height; // making left column pnl dynamic
+            if(eDpi == 0)
+            {
+                eDpi = Display(DpiType.Effective);
+            }
+            pnlAddGroup.Top = pnlExistingShortcuts.Bottom + (int)(20 * eDpi / 96);
+            pnlAddGroup.Left = ((this.ClientSize.Width+pnlLeftColumn.Width) - pnlAddGroup.Width) / 2 ;
         }
 
         private void cmdAddGroup_Click(object sender, EventArgs e)
@@ -216,11 +230,6 @@ namespace client.Forms
         private void githubLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/PikeNote/taskbar-groups-pike-beta");
-        }
-
-        private void frmClient_Resize(object sender, EventArgs e)
-        {
-            Reset();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -318,6 +327,11 @@ namespace client.Forms
                     {
                         if (fm.FileExists(fileArray[i, int1]))
                         {
+                            // Delete if a file is already there (edge cases where the background or another group is created)
+                            if(fm.FileExists(fileArray[i, int2]))
+                            {
+                                fm.Delete(fileArray[i, int2]);
+                            }
                             fm.Move(fileArray[i, int1], fileArray[i, int2]);
                         }
                     }
@@ -356,6 +370,11 @@ namespace client.Forms
             catch(IOException e) {
                 MessageBox.Show("The application does not have access to this directory!\r\n\r\nError: " + e.Message);
             }
+        }
+
+        private void frmClient_SizeChanged(object sender, EventArgs e)
+        {
+            Reset();
         }
     }
 
