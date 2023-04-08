@@ -17,6 +17,7 @@ using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using client.Properties;
+using Shell32;
 
 namespace client.Forms
 {
