@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace backgroundClient
 {
     partial class bkgProcess
@@ -36,7 +38,7 @@ namespace backgroundClient
             // notifyIcon1
             // 
             this.notifyIcon1.Text = "Taskbar Groups Background";
-            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            this.notifyIcon1.MouseDown += new MouseEventHandler(this.notifyIcon1_Click);
             // 
             // bkgProcess
             // 

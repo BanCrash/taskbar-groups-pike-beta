@@ -115,9 +115,12 @@ namespace backgroundClient
             catch { }
         }
 
-        private void notifyIcon1_Click(object sender, EventArgs e)
+        private void notifyIcon1_Click(object sender, MouseEventArgs e)
         {
-            openEditor();
+            if (e.Button == MouseButtons.Left)
+            {
+                openEditor();
+            }
         }
 
         public static void openEditor(string arguments="")
